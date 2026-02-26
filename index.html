@@ -1381,7 +1381,7 @@
 document.addEventListener("DOMContentLoaded", function () {
 
   // Initialize EmailJS ONCE
-  emailjs.init("sBOTvSBC9rTsOlDN");
+  emailjs.init("-sBOTvSBC9rTsOlDN");
 
   const form = document.getElementById("contact-form");
 
@@ -1397,6 +1397,7 @@ document.addEventListener("DOMContentLoaded", function () {
     submitBtn.disabled = true;
     submitBtn.textContent = "TRANSMITTING...";
 
+    
     emailjs.sendForm("service_3mgnvoe", "template_4j9tc9k", form)
       .then(function(response) {
         console.log("SUCCESS!", response.status, response.text);
