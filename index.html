@@ -1375,39 +1375,53 @@
     </script>
 
     <!-- EmailJS Form Handler -->
-    <script>
-    document.getElementById("contact-form").addEventListener("submit", function(event) {
-      event.preventDefault();
-      const form = this;
-      const submitBtn = form.querySelector('button[type="submit"]');
+   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
-      submitBtn.disabled = true;
-      submitBtn.textContent = "TRANSMITTING...";
+<script>
+document.addEventListener("DOMContentLoaded", function () {
 
-      emailjs.sendForm("service_3mgnvoe", "template_4j9tc9k", form)
-        .then(function() {
-          form.outerHTML = `
-            <div class="py-20 text-center bg-gray-50 p-6 border-2 border-black">
-              <i class="ri-checkbox-circle-fill text-6xl text-neo-green mb-4 block"></i>
-              <h3 class="text-2xl font-black uppercase">Transmission Received</h3>
-              <p class="font-mono text-sm mt-2">
-                Your message found its target. I'll be sliding into your inbox real soon.
-              </p>
-            </div>
-          `;
-        }, function(error) {
-          submitBtn.disabled = false;
-          submitBtn.textContent = "TRANSMIT DATA";
-          const existing = form.querySelector('#form-error-msg');
-          if (!existing) {
-            const errDiv = document.createElement('div');
-            errDiv.id = 'form-error-msg';
-            errDiv.className = 'bg-neo-red text-white border-2 border-black p-3 font-mono text-sm font-bold';
-            errDiv.textContent = '⚠ TRANSMISSION FAILED — Please try again or contact directly via email.';
-            form.insertBefore(errDiv, submitBtn);
-          }
-        });
-    });
-    </script>
+  // Initialize EmailJS ONCE
+  emailjs.init("sBOTvSBC9rTsOlDN");
+
+  const form = document.getElementById("contact-form");
+
+  if (!form) {
+    console.error("Contact form not found");
+    return;
+  }
+
+  form.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const submitBtn = form.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    submitBtn.textContent = "TRANSMITTING...";
+
+    emailjs.sendForm("service_3mgnvoe", "template_4j9tc9k", form)
+      .then(function(response) {
+        console.log("SUCCESS!", response.status, response.text);
+
+        form.outerHTML = `
+          <div class="py-20 text-center bg-gray-50 p-6 border-2 border-black">
+            <h3 class="text-2xl font-black uppercase">Transmission Received</h3>
+            <p class="font-mono text-sm mt-2">
+              Your message has been sent successfully.
+            </p>
+          </div>
+        `;
+      })
+      .catch(function(error) {
+        console.error("FAILED...", error);
+
+        submitBtn.disabled = false;
+        submitBtn.textContent = "TRANSMIT DATA";
+
+        alert("⚠ TRANSMISSION FAILED — Please try again or contact directly via email.");
+      });
+
+  });
+
+});
+</script>
   </body>
 </html>
